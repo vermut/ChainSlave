@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-declare var jitsiplugin:any;
-declare var navigator:any;
-declare var cordova:any;
+import {Component} from '@angular/core';
+import {NavController} from 'ionic-angular';
+
+declare var jitsiplugin: any;
+declare var navigator: any;
+declare var cordova: any;
 
 
 @Component({
@@ -20,26 +21,26 @@ export class HomePage {
 
   checkMicrophoneAndCall(id: number) {
     cordova.plugins.diagnostic.getMicrophoneAuthorizationStatus((status) => {
-      if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
+      if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
         this.call(id);
-      } else if(
-            (status === cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED && cordova.platformId.toLowerCase() === 'ios')
-        ||  (status !== cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS && cordova.platformId.toLowerCase() !== 'ios')
+      } else if (
+        (status === cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED && cordova.platformId.toLowerCase() === 'ios')
+        || (status !== cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS && cordova.platformId.toLowerCase() !== 'ios')
       ) {
         cordova.plugins.diagnostic.requestMicrophoneAuthorization((status) => {
-            if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
-              this.call(id);
-            } else {
-              alert("You denied access to record audio, please allow access to microphone in system settings to make audio calls");
-            }
-          }, function(error) {
-            alert("The following error occurred: "+error);
-          })
+          if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
+            this.call(id);
+          } else {
+            alert("You denied access to record audio, please allow access to microphone in system settings to make audio calls");
+          }
+        }, function (error) {
+          alert("The following error occurred: " + error);
+        })
       } else {
         alert("You denied access to record audio, please allow access to microphone in system settings to make audio calls");
       }
-    }, function(error) {
-      alert("The following error occurred: "+error);
+    }, function (error) {
+      alert("The following error occurred: " + error);
     });
   }
 
@@ -66,10 +67,10 @@ export class HomePage {
   }
 
   updateGeoPosition() {
-    navigator.geolocation.getCurrentPosition( (position) => {
+    navigator.geolocation.getCurrentPosition((position) => {
       this.geoPosition = position.coords.latitude + ',' + position.coords.longitude;
-    },  (error) => {
-      alert('code: '    + error.code    + '\n' +
+    }, (error) => {
+      alert('code: ' + error.code + '\n' +
         'message: ' + error.message + '\n');
     });
   }
