@@ -7,8 +7,10 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <ion-content padding>
+    <button ion-button color="light" (click)="updateGeoPosition()">{{this.geoPosition}}</button>
+    <br/>
+    <button *ngIf="!inCall" ion-button color="light" (click)="checkMicrophoneAndCall(1)">Call 1</button>
+    <button *ngIf="!inCall" ion-button color="light" (click)="checkMicrophoneAndCall(2)">Call 2</button>
+    <button *ngIf="inCall" ion-button color="light" (click)="destroy()">End call</button>
 </ion-content>
