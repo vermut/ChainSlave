@@ -46,14 +46,12 @@ import {RegisterComponent} from './register/index';
     },
 
     // provider used to create fake backend
-    fakeBackendProvider,
+    // fakeBackendProvider,
 
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ],
   bootstrap: [IonicApp],
-  entryComponents: [
-    AppComponent
-  ],
+  entryComponents: [AppComponent],
 })
 
 export class AppModule {
