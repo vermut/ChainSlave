@@ -1,31 +1,48 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {ErrorHandler, NgModule} from '@angular/core';
-import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
-import {SplashScreen} from '@ionic-native/splash-screen';
-import {StatusBar} from '@ionic-native/status-bar';
+﻿import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule }    from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import {MyApp} from './app.component';
-import {HomePage} from '../pages/home/home';
+// used to create fake backend
+import { fakeBackendProvider } from './_helpers';
+
+import { AppComponent }  from './app.component';
+import { routing }        from './app.routing';
+
+import { AlertComponent } from './_directives';
+import { AuthGuard } from './_guards';
+import { JwtInterceptor, ErrorInterceptor } from './_helpers';
+import { AlertService, AuthenticationService, UserService } from './_services';
+import { HomeComponent } from './home';
+import { LoginComponent } from './login';
+import { RegisterComponent } from './register';
 
 @NgModule({
-  declarations: [
-    MyApp,
-    HomePage
-  ],
-  imports: [
-    BrowserModule,
-    IonicModule.forRoot(MyApp)
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    HomePage
-  ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
-  ]
+    imports: [
+        BrowserModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        routing
+    ],
+    declarations: [
+        AppComponent,
+        AlertComponent,
+        HomeComponent,
+        LoginComponent,
+        RegisterComponent
+    ],
+    providers: [
+        AuthGuard,
+        AlertService,
+        AuthenticationService,
+        UserService,
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+        // provider used to create fake backend
+        fakeBackendProvider
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+
+export class AppModule { }
