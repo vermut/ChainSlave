@@ -1,10 +1,13 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { first } from 'rxjs/operators';
 
-import { User } from '../_models';
-import { UserService } from '../_services';
+import { User } from '../_models/index';
+import { UserService } from '../_services/index';
 
-@Component({templateUrl: 'home.component.html'})
+@Component({
+    moduleId: module.id,
+    templateUrl: 'home.component.html'
+})
+
 export class HomeComponent implements OnInit {
     currentUser: User;
     users: User[] = [];
@@ -18,14 +21,10 @@ export class HomeComponent implements OnInit {
     }
 
     deleteUser(id: number) {
-        this.userService.delete(id).pipe(first()).subscribe(() => { 
-            this.loadAllUsers() 
-        });
+        this.userService.delete(id).subscribe(() => { this.loadAllUsers() });
     }
 
     private loadAllUsers() {
-        this.userService.getAll().pipe(first()).subscribe(users => { 
-            this.users = users; 
-        });
+        this.userService.getAll().subscribe(users => { this.users = users; });
     }
 }
