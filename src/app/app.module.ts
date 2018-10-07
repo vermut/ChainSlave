@@ -1,7 +1,8 @@
-﻿import {NgModule} from '@angular/core';
+﻿import {NgModule, ErrorHandler} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
 // used to create fake backend
 import {fakeBackendProvider} from './_helpers/index';
@@ -17,12 +18,14 @@ import {HomeComponent} from './home/index';
 import {LoginComponent} from './login/index';
 import {RegisterComponent} from './register/index';
 
+
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    routing
+    routing,
+    IonicModule.forRoot(AppComponent)
   ],
   declarations: [
     AppComponent,
@@ -43,9 +46,14 @@ import {RegisterComponent} from './register/index';
     },
 
     // provider used to create fake backend
-    fakeBackendProvider
+    fakeBackendProvider,
+
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [IonicApp],
+  entryComponents: [
+    AppComponent
+  ],
 })
 
 export class AppModule {
