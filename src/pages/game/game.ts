@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {GameData} from "../../app/_models";
 import {GamedataProvider} from "../../providers/gamedata/gamedata";
+import {timer} from "rxjs/observable/timer";
 
 /**
  * Generated class for the GamePage page.
@@ -18,16 +19,18 @@ import {GamedataProvider} from "../../providers/gamedata/gamedata";
 export class GamePage implements OnInit {
   gameData: GameData;
 
-  constructor(private gamedataProvider: GamedataProvider) {}
+  constructor(private gamedataProvider: GamedataProvider) {
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GamePage');
   }
 
   ngOnInit(): void {
-    this.gamedataProvider.getData().subscribe(data => {
-      this.gameData = data;
-    });
+    timer(0, 1000).subscribe(() =>
+      this.gamedataProvider.getData().subscribe(data => {
+          this.gameData = data;
+        }
+      ));
   }
-
 }
