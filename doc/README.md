@@ -17,7 +17,7 @@ ionic cordova plugin add cordova.plugins.diagnostic
 ionic cordova platform add android ios
 
 # билдим андройд
-ionic cordova build adndroid
+ionic cordova build android
 
 # билдим айос
 ionic cordova build ios --prod -- --buildFlag="-UseModernBuildSystem=0"

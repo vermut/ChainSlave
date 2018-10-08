@@ -1,6 +1,5 @@
 ﻿import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {HttpClient} from '@angular/common/http';
 import 'rxjs/add/operator/map'
 import {SERVER_URL} from "../../providers/gamedata/gamedata";
 

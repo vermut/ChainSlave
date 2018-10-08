@@ -5,7 +5,6 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
 // used to create fake backend
-import {fakeBackendProvider} from './_helpers/index';
 
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
