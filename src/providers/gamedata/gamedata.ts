@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {GameData, User} from "../../app/_models";
+import {GameData} from "../../app/_models";
 
 /*
   Generated class for the GamedataProvider provider.
@@ -16,7 +16,7 @@ export class GamedataProvider {
   }
 
   getData() {
-    return this.http.get<GameData>(SERVER_URL + '/api/gamedata');
+    return this.http.get<GameData>(SERVER_URL + '/api/gamedata', {withCredentials: true});
   }
 }
 
