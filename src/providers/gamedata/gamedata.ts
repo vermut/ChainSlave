@@ -28,5 +28,5 @@ export class GamedataProvider {
   }
 }
 
-// export const SERVER_URL = "https://chainreactor.herokuapp.com";
-export const SERVER_URL = "http://192.168.118.63:8080";
+export const SERVER_URL = "https://chainreactor.herokuapp.com";
+// export const SERVER_URL = "http://192.168.118.63:8080";

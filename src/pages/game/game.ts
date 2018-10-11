@@ -5,6 +5,8 @@ import {GamedataProvider} from "../../providers/gamedata/gamedata";
 import {Observable} from "rxjs";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {ISubscription} from "rxjs/Subscription";
+import {Router} from "@angular/router";
+import {BackgroundMode} from '@ionic-native/background-mode';
 
 declare var jitsiplugin: any;
 declare var navigator: any;
@@ -21,11 +23,16 @@ export class GamePage implements OnInit, OnDestroy {
   longitude = undefined;
 
   private timer$: Observable<number>;
-  private $timer : ISubscription;
+  private $timer: ISubscription;
+  private $geo: ISubscription;
 
-  constructor(private platform: Platform, private gamedataProvider: GamedataProvider) {
+  constructor(private platform: Platform, private gamedataProvider: GamedataProvider, public router: Router, public backgroundMode: BackgroundMode) {
     platform.ready().then(() => {
       console.log('Platform ready');
+
+      // TODO https://ionicframework.com/docs/native/location-accuracy/
+      // TODO (maybe) https://ionicframework.com/docs/native/background-geolocation/
+
 
       navigator.geolocation.getCurrentPosition((position) => {
         console.log('Latitude: ' + position.coords.latitude + '\n' +
@@ -55,7 +62,8 @@ export class GamePage implements OnInit, OnDestroy {
           this.longitude = updatedLongitude;
 
           console.log('we are: ' + updatedLatitude + ", " + updatedLongitude);
-          this.gamedataProvider.putPosition(position).subscribe(_ => {}, error => {
+          this.$geo = this.gamedataProvider.putPosition(position).subscribe(_ => {
+            }, error => {
               console.log("this.gamedataProvider.putPosition(position) " + error);
             }
           );
@@ -65,6 +73,8 @@ export class GamePage implements OnInit, OnDestroy {
           'message: ' + error.message + '\n');
       }, {timeout: 5000, enableHighAccuracy: true});
     });
+
+    this.backgroundMode.enable();
   }
 
   ionViewDidLoad() {
@@ -82,5 +92,11 @@ export class GamePage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.$timer.unsubscribe();
+    this.$geo.unsubscribe();
+    this.backgroundMode.enable();
+  }
+
+  logout(): void {
+    this.router.navigateByUrl('/login');
   }
 }

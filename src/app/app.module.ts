@@ -18,6 +18,7 @@ import {LoginComponent} from './login/index';
 import {RegisterComponent} from './register/index';
 import {GamedataProvider} from '../providers/gamedata/gamedata';
 import {GamePageModule} from "../pages/game/game.module";
+import {BackgroundMode} from "@ionic-native/background-mode";
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import {GamePageModule} from "../pages/game/game.module";
     // fakeBackendProvider,
 
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    GamedataProvider
+    GamedataProvider,
+    BackgroundMode
   ],
   bootstrap: [IonicApp],
   entryComponents: [AppComponent],
