@@ -1,6 +1,7 @@
 #!/bin/bash -v
 
 set -e
+cd ..
 
 # Build Ionic App for iOS
 cordova platform add ios --nofetch

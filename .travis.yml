@@ -33,6 +33,7 @@ matrix:
     - google-gdk-license-.+
   - os: osx
     language: objective-c
+    xcode_destination: platform=iOS Simulator,OS=9.3,name=iPhone 5s
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
