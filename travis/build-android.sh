@@ -3,9 +3,9 @@
 set -e
 
 # Build Ionic App for Android
-ionic info
-ionic cordova platform add android@7.0.0 --verbose
-ionic info
+cordova plugin add "https://github.com/mnill/cordova-plugin-jitsi-meet"
+
+ionic cordova platform add android --verbose
 
 if [[ "$TRAVIS_BRANCH" == "develop" ]]
 then

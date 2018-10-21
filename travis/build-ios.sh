@@ -3,7 +3,8 @@
 set -e
 
 # Build Ionic App for iOS
-ionic info
+cordova plugin add "https://github.com/mnill/cordova-plugin-jitsi-meet"
+
 ionic cordova platform add ios --verbose
 
 if [[ "$TRAVIS_BRANCH" == "develop" ]]
