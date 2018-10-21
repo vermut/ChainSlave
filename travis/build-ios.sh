@@ -3,7 +3,7 @@
 set -e
 
 # Build Ionic App for iOS
-ionic cordova platform add ios --nofetch
+ionic cordova platform add ios --verbose
 
 if [[ "$TRAVIS_BRANCH" == "develop" ]]
 then
