@@ -2,9 +2,6 @@
 
 set -e
 
-# Install plugin with special needs
-ionic cordova plugin add https://github.com/mnill/cordova-plugin-jitsi-meet
-
 # Build Ionic App for iOS
 ionic cordova platform add ios --verbose
 
