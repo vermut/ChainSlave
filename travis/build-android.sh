@@ -3,6 +3,7 @@
 set -e
 
 # Build Ionic App for Android
+ionic info
 ionic cordova platform add android --verbose
 
 if [[ "$TRAVIS_BRANCH" == "develop" ]]
