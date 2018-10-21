@@ -2,10 +2,8 @@
 
 set -e
 
-ls -al
-
 # Build Ionic App for Android
-ionic cordova platform add android --nofetch
+ionic cordova platform add android --nofetch --verbose
 
 if [[ "$TRAVIS_BRANCH" == "develop" ]]
 then
