@@ -48,8 +48,8 @@ cache:
 before_install:
 - export LANG=en_US.UTF-8
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install yarn ios-sim jq ios-deploy ; fi
-- nvm install 10
-- yarn global add ionic cordova@8.0.0
+- nvm install 8
+- yarn global add ionic cordova
 before_script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./travis/addkeys.sh ; fi
 script:
