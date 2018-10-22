@@ -12,8 +12,8 @@ matrix:
       - tools
       - platform-tools
       - tools
-      - build-tools-26.0.0
-      - android-26
+      - build-tools-26.0.2
+      - android-27
       - extra-google-google_play_services
       - extra-google-m2repository
       - extra-android-m2repository
@@ -33,7 +33,7 @@ matrix:
     - google-gdk-license-.+
   - os: osx
     language: objective-c
-    xcode_destination: platform=iOS Simulator,OS=9.3,name=iPhone 5s
+    # xcode_destination: platform=iOS Simulator,OS=9.3,name=iPhone 5s
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
