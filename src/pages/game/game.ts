@@ -7,7 +7,6 @@ import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {ISubscription} from "rxjs/Subscription";
 import {Router} from "@angular/router";
 import {BackgroundMode} from '@ionic-native/background-mode';
-import { Vibration } from '@ionic-native/vibration';
 
 declare var jitsiplugin: any;
 declare var navigator: any;
@@ -27,7 +26,7 @@ export class GamePage implements OnInit, OnDestroy {
   private $timer: ISubscription;
   private $geo: ISubscription;
 
-  constructor(private platform: Platform, private gamedataProvider: GamedataProvider, public router: Router, public backgroundMode: BackgroundMode, public vibration: Vibration) {
+  constructor(private platform: Platform, private gamedataProvider: GamedataProvider, public router: Router, public backgroundMode: BackgroundMode) {
     platform.ready().then(() => {
       console.log('Platform ready');
 
@@ -87,6 +86,7 @@ export class GamePage implements OnInit, OnDestroy {
     this.$timer = this.timer$.subscribe(_ =>
       this.gamedataProvider.getData().subscribe(data => {
           this.gameData = data;
+          navigator.vibrate(500);
         }
       ));
   }
@@ -95,10 +95,10 @@ export class GamePage implements OnInit, OnDestroy {
     this.$timer.unsubscribe();
     this.$geo.unsubscribe();
     this.backgroundMode.disable();
-    this.vibration.vibrate(500);
   }
 
   logout(): void {
+    navigator.vibrate(5000);
     this.router.navigateByUrl('/login');
   }
 }
