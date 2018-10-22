@@ -32,9 +32,8 @@ matrix:
     - android-sdk-license-.+
     - google-gdk-license-.+
 
-# Skip osx for now
-#  - os: osx
-#    language: objective-c
+  - os: osx
+    language: objective-c
 #     xcode_destination: platform=iOS Simulator,OS=9.3,name=iPhone 5s
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
