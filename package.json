@@ -1,7 +1,7 @@
 {
-  "name": "ChainSlave",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
+  "name": "chain_slave",
+  "version": "0.0.2",
+  "author": "Pavels Veretennikovs",
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
@@ -28,6 +28,7 @@
     "@ionic-native/status-bar": "~4.15.0",
     "@ionic-native/vibration": "^4.15.0",
     "@ionic/storage": "2.2.0",
+    "cordova-android": "7.1.1",
     "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-geolocation": "^4.0.1",
@@ -49,7 +50,7 @@
     "@ionic/app-scripts": "3.2.0",
     "typescript": "~2.6.2"
   },
-  "description": "An Ionic project",
+  "description": "ChainReactor game client",
   "cordova": {
     "plugins": {
       "cordova-plugin-jitsi": {},
@@ -66,6 +67,8 @@
       "cordova-plugin-background-mode": {},
       "cordova-plugin-vibration": {}
     },
-    "platforms": []
+    "platforms": [
+      "android"
+    ]
   }
 }
