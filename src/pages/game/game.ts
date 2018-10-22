@@ -94,7 +94,7 @@ export class GamePage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.$timer.unsubscribe();
     this.$geo.unsubscribe();
-    this.backgroundMode.enable();
+    this.backgroundMode.disable();
     this.vibration.vibrate(500);
   }
 

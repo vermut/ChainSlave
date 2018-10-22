@@ -31,9 +31,11 @@ matrix:
     - android-sdk-preview-license-.+
     - android-sdk-license-.+
     - google-gdk-license-.+
-  - os: osx
-    language: objective-c
-    # xcode_destination: platform=iOS Simulator,OS=9.3,name=iPhone 5s
+
+# Skip osx for now
+#  - os: osx
+#    language: objective-c
+#     xcode_destination: platform=iOS Simulator,OS=9.3,name=iPhone 5s
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
@@ -59,3 +61,8 @@ script:
 env:
   global:
   - JAVA_HOME=/usr/lib/jvm/java-8-oracle
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+#  keep-history: true
