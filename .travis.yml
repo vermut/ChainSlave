@@ -3,6 +3,12 @@ matrix:
   - os: linux
     sudo: false
     language: android
+    components:
+      - tools
+      - build-tools-27.0.3
+      - android-27
+      - extra-android-m2repository
+
 
   - os: osx
     language: objective-c
@@ -20,12 +26,10 @@ cache:
   - $HOME/.gradle/wrapper/
   - $HOME/.android/build-cache
 
-node_js:
-  - 10
-
 before_install:
   - export LANG=en_US.UTF-8
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install yarn ios-sim jq ios-deploy ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then yes | sdkmanager "platforms;android-27" ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then brew install yarn ios-sim jq ios-deploy ; fi
   - nvm install 10
   - yarn global add ionic cordova
 
