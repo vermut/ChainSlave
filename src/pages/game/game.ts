@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IonicPage, Platform} from 'ionic-angular';
 import {GameData} from "../../app/_models";
-import {GamedataProvider} from "../../providers/gamedata/gamedata";
+import {GamedataProvider, SERVER_URL} from "../../providers/gamedata/gamedata";
 import {Observable} from "rxjs";
 import {TimerObservable} from "rxjs/observable/TimerObservable";
 import {ISubscription} from "rxjs/Subscription";
@@ -11,6 +11,7 @@ import {BackgroundMode} from '@ionic-native/background-mode';
 declare var jitsiplugin: any;
 declare var navigator: any;
 declare var cordova: any;
+declare var BackgroundGeolocation: any;
 
 @IonicPage()
 @Component({
@@ -24,57 +25,62 @@ export class GamePage implements OnInit, OnDestroy {
 
   private timer$: Observable<number>;
   private $timer: ISubscription;
-  private $geo: ISubscription;
 
-  constructor(private platform: Platform, private gamedataProvider: GamedataProvider, public router: Router, public backgroundMode: BackgroundMode) {
+  constructor(private platform: Platform, private gamedataProvider: GamedataProvider, public router: Router) {
     platform.ready().then(() => {
       console.log('Platform ready');
 
       // TODO https://ionicframework.com/docs/native/location-accuracy/
       // TODO (maybe) https://ionicframework.com/docs/native/background-geolocation/
 
+      let currentUser;
+      try {
+        currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      } catch (e){}
 
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log('Latitude: ' + position.coords.latitude + '\n' +
-          'Longitude: ' + position.coords.longitude + '\n' +
-          'Altitude: ' + position.coords.altitude + '\n' +
-          'Accuracy: ' + position.coords.accuracy + '\n' +
-          'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
-          'Heading: ' + position.coords.heading + '\n' +
-          'Speed: ' + position.coords.speed + '\n' +
-          'Timestamp: ' + position.timestamp + '\n');
-      }, (error) => {
-        console.log('code: ' + error.code + '\n' +
-          'message: ' + error.message + '\n');
-      }, {timeout: 5000, enableHighAccuracy: true});
+      if (currentUser && currentUser.JSESSIONID && currentUser.token) {
+        BackgroundGeolocation.configure({
+          locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+          desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
+          stationaryRadius: 0,
+          distanceFilter: 0,
+          startOnBoot: false,
+          stopOnStillActivity: false,
+          notificationTitle: 'Background tracking',
+          notificationText: 'enabled',
+          debug: true,
+          interval: 3000,
+          fastestInterval: 5000,
+          activitiesInterval: 6000,
+          url: SERVER_URL + '/api/gamedata',
+          httpHeaders: {
+            'Cookie': `JSESSIONID=${currentUser.JSESSIONID}`,
+            'Authorization': `Bearer ${currentUser.token}`
+          },
+          // customize post properties
+          postTemplate: {
+            timestamp: '@time',
+            latitude:  '@latitude',
+            longitude: '@longitude',
+          }
+        });
+        // BackgroundGeolocation.on('start', function() {
+          // alert('[INFO] BackgroundGeolocation service has been started');
+        // });
+        BackgroundGeolocation.checkStatus(function(status) {
+          console.log('[INFO] BackgroundGeolocation service is running', status.isRunning);
+          console.log('[INFO] BackgroundGeolocation services enabled', status.locationServicesEnabled);
+          console.log('[INFO] BackgroundGeolocation auth status: ' + status.authorization);
 
-      navigator.geolocation.watchPosition(position => {
-        if (!position.coords) {
-          console.log("Empty position.coords?..");
-          return;
-        }
-
-        const updatedLatitude = position.coords.latitude;
-        const updatedLongitude = position.coords.longitude;
-
-        if (updatedLatitude != this.latitude && updatedLongitude != this.longitude) {
-          this.latitude = updatedLatitude;
-          this.longitude = updatedLongitude;
-
-          console.log('we are: ' + updatedLatitude + ", " + updatedLongitude);
-          this.$geo = this.gamedataProvider.putPosition(position).subscribe(_ => {
-            }, error => {
-              console.log("this.gamedataProvider.putPosition(position) " + error);
-            }
-          );
-        }
-      }, (error) => {
-        console.log('code: ' + error.code + '\n' +
-          'message: ' + error.message + '\n');
-      }, {timeout: 5000, enableHighAccuracy: true});
+          // you don't need to check status before start (this is just the example)
+          if (!status.isRunning) {
+            BackgroundGeolocation.start(); //triggers start on start event
+          }
+        });
+      } else {
+        this.router.navigate(['login'], {queryParams: {returnUrl: ''}});
+      }
     });
-
-    this.backgroundMode.enable();
   }
 
   ionViewDidLoad() {
@@ -82,23 +88,22 @@ export class GamePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.timer$ = TimerObservable.create(0, 1000);
+    this.timer$ = TimerObservable.create(0, 5000);
     this.$timer = this.timer$.subscribe(_ =>
       this.gamedataProvider.getData().subscribe(data => {
           this.gameData = data;
-          navigator.vibrate(500);
+          // navigator.vibrate(500);
         }
       ));
   }
 
   ngOnDestroy(): void {
+    BackgroundGeolocation.stop();
     this.$timer.unsubscribe();
-    this.$geo.unsubscribe();
-    this.backgroundMode.disable();
   }
 
   logout(): void {
     navigator.vibrate(5000);
-    this.router.navigateByUrl('/login');
+    this.router.navigate(['login'], {queryParams: {returnUrl: ''}});
   }
 }

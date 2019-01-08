@@ -24,9 +24,9 @@ export class GamedataProvider {
       timestamp: position.timestamp,
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
-    }, {withCredentials: true});
+    }, { withCredentials: true });
   }
 }
 
-export const SERVER_URL = "https://chainreactor.herokuapp.com";
+export const SERVER_URL = "http://chainreactor.herokuapp.com";
 // export const SERVER_URL = "http://192.168.118.63:8080";
